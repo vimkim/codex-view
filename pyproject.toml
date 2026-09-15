@@ -1,0 +1,33 @@
+[project]
+name = "codex-view"
+version = "0.1.0"
+description = "Browse a local Codex conversation with live updates and rendered math"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "markdown-it-py>=4,<5",
+    "mdit-py-plugins>=0.5,<0.6",
+    "prompt-toolkit>=3.0.52,<4",
+]
+
+[project.scripts]
+codex-view = "codex_view.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.13,<1"]
+browser = ["playwright>=1.56,<2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["browser: headless browser integration tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[build-system]
+requires = ["uv_build>=0.9.11,<0.10.0"]
+build-backend = "uv_build"

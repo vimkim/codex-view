@@ -1,0 +1,2 @@
+# Keep the upstream browser distribution intact and collapse it in GitHub diffs.
+src/codex_view/static/mathjax/** linguist-vendored -whitespace
