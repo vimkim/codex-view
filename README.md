@@ -40,6 +40,23 @@ After changing the source, update the installed copy:
 uv tool install --reinstall --python 3.14.6 .
 ```
 
+### Convenience commands with just
+
+If `just` is installed, run these from this checkout. Run `just` to list commands.
+Install and reinstall use the Python version in `.python-version`.
+
+| Command | Action |
+| --- | --- |
+| `just install` | Install the user-level `codex-view` command from this checkout. |
+| `just reinstall` | Refresh the installed command from the current source. |
+| `just reinstall-after-update` | Run `git pull --ff-only` on the current branch, then reinstall. |
+| `just sync` | Install locked development dependencies. |
+| `just check` | Run lint, formatting checks, and tests. |
+| `just build` | Build the distributable package. |
+
+`reinstall-after-update` stops if the pull fails; it does not create merge commits.
+Restart any running viewer to use the updated installation.
+
 ## Select a conversation
 
 By default, the picker shows interactive CLI sessions whose recorded working
