@@ -4,10 +4,12 @@ import argparse
 import json
 import os
 import signal
+import socket
 import sys
 from pathlib import Path
 
 from . import __version__
+from .network import listening_urls
 from .picker import choose_session
 from .server import make_server
 from .sessions import SessionCatalog, clean_label
@@ -119,12 +121,12 @@ def main():
     port = server.server_address[1]
     print(f"Viewing: {selected.title}\nSession: {selected.id}", flush=True)
     print(f"Listening: {args.host}:{port}", flush=True)
-    if args.host in ("0.0.0.0", "::"):
-        print(f"Open http://<server-vpn-ip>:{port} in your browser.", flush=True)
-        print(f"Local address: http://localhost:{port}", flush=True)
-    else:
-        host = f"[{args.host}]" if ":" in args.host else args.host
-        print(f"Open http://{host}:{port} in your browser.", flush=True)
+    dual_stack = server.address_family == socket.AF_INET6 and not server.socket.getsockopt(
+        socket.IPPROTO_IPV6, socket.IPV6_V6ONLY
+    )
+    print("Available addresses:", flush=True)
+    for url in listening_urls(server.server_address[0], port, dual_stack=dual_stack):
+        print(f"  {url}", flush=True)
     print("Live updates enabled. Keep chatting in Codex CLI. Ctrl+C stops this viewer.", flush=True)
 
     def stop(signum, frame):

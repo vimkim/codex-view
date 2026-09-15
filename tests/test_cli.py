@@ -78,8 +78,14 @@ def test_last_launch_and_clean_shutdown(corpus):
         text=True,
     )
     try:
-        lines = [process.stdout.readline() for _ in range(6)]
+        lines = []
+        for line in process.stdout:
+            lines.append(line)
+            if "Ctrl+C" in line:
+                break
         assert any("Listening: 0.0.0.0:" in line for line in lines)
+        assert any("Available addresses:" in line for line in lines)
+        assert any("http://127.0.0.1:" in line for line in lines)
         assert any("Ctrl+C" in line for line in lines)
         process.send_signal(signal.SIGTERM)
         stdout, stderr = process.communicate(timeout=5)

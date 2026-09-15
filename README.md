@@ -95,6 +95,23 @@ Open `http://SERVER_VPN_IP:8765`. The viewer permits direct IP and hostname
 access. `0.0.0.0` is the bind address, not the address to enter in your browser.
 It has no application login; access is controlled by your network/VPN.
 
+Startup lists the concrete interface URLs for the listener, for example:
+
+```text
+Listening: 0.0.0.0:8765
+Available addresses:
+  http://127.0.0.1:8765
+  http://192.168.1.10:8765
+  http://10.0.0.2:8765
+```
+
+On Linux, discovery uses `ip -j address show up`, including LAN, VPN and bridge
+interfaces. Only addresses supported by the listener are shown. With a specific
+bind address, only that address is listed. On hosts without `ip`, discovery
+falls back to loopback and hostname-resolved addresses. Which address a client
+can reach depends on its network routes. IPv6 URLs include brackets and, where
+needed, an interface scope.
+
 For an SSH tunnel, use the default loopback listener:
 
 ```bash
