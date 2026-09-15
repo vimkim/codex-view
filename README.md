@@ -5,11 +5,11 @@ browser, with rendered Markdown and LaTeX equations.
 
 ```bash
 cd /path/to/your/project
-codex-view --host 0.0.0.0
+codex-view
 ```
 
 Use the searchable session picker, press Enter, then open
-`http://SERVER_VPN_IP:8765` in your browser. Continue chatting in Codex CLI;
+one of the printed LAN/VPN URLs in your browser. Continue chatting in Codex CLI;
 new saved messages appear automatically. Ctrl+C stops the viewer.
 
 ## Install with uv
@@ -31,7 +31,7 @@ directory is not on PATH, run `uv tool update-shell` and open a new shell.
 For development, run without installing the command globally:
 
 ```bash
-uv run codex-view -C /path/to/your/project --host 0.0.0.0
+uv run codex-view -C /path/to/your/project
 ```
 
 After changing the source, update the installed copy:
@@ -83,12 +83,12 @@ The default data directory is `$CODEX_HOME`, or `~/.codex` when unset. Active
 session storage under `sessions/` is searched; `archived_sessions/` is not.
 Titles come from `session_index.jsonl`, with the first user message as a fallback.
 
-## VPN and SSH access
+## LAN, VPN and SSH access
 
-For a VPN-accessible server, bind to all IPv4 interfaces:
+By default, the server binds to all IPv4 interfaces for LAN/VPN access:
 
 ```bash
-codex-view --host 0.0.0.0 --port 8765
+codex-view --port 8765
 ```
 
 Open `http://SERVER_VPN_IP:8765`. The viewer permits direct IP and hostname
@@ -112,11 +112,11 @@ falls back to loopback and hostname-resolved addresses. Which address a client
 can reach depends on its network routes. IPv6 URLs include brackets and, where
 needed, an interface scope.
 
-For an SSH tunnel, use the default loopback listener:
+For local-only access or an SSH tunnel, explicitly select the loopback listener:
 
 ```bash
 # On the server
-codex-view --last --port 8765
+codex-view --last --host 127.0.0.1 --port 8765
 
 # In another terminal on your own computer
 ssh -N -L 8765:127.0.0.1:8765 USER@SERVER

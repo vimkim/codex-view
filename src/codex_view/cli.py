@@ -33,7 +33,9 @@ def parser():
         "--include-non-interactive", action="store_true", help="include exec and subagent sessions"
     )
     result.add_argument(
-        "--host", default="127.0.0.1", help="listen address; use 0.0.0.0 for VPN access"
+        "--host",
+        default="0.0.0.0",
+        help="listen address (default: 0.0.0.0 for LAN/VPN access; 127.0.0.1 for local only)",
     )
     result.add_argument(
         "--port", type=int, default=8765, help="listen port (default: 8765; 0 chooses a free port)"

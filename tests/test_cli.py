@@ -4,6 +4,8 @@ import signal
 import subprocess
 import sys
 
+import pytest
+
 
 def run_cli(home, *args, cwd=None):
     return subprocess.run(
@@ -55,7 +57,11 @@ def test_specific_id_bypasses_directory_filter_and_prefix_ambiguity(corpus):
     assert run_cli(home, "abc", "--list", cwd=project).returncode == 2
 
 
-def test_last_launch_and_clean_shutdown(corpus):
+@pytest.mark.parametrize(
+    ("host_args", "expected_host"),
+    [([], "0.0.0.0"), (["--host", "127.0.0.1"], "127.0.0.1")],
+)
+def test_last_launch_and_clean_shutdown(corpus, host_args, expected_host):
     home, project, _, create = corpus
     create()
     process = subprocess.Popen(
@@ -67,8 +73,7 @@ def test_last_launch_and_clean_shutdown(corpus):
             "--codex-home",
             str(home),
             "--last",
-            "--host",
-            "0.0.0.0",
+            *host_args,
             "--port",
             "0",
         ],
@@ -83,7 +88,7 @@ def test_last_launch_and_clean_shutdown(corpus):
             lines.append(line)
             if "Ctrl+C" in line:
                 break
-        assert any("Listening: 0.0.0.0:" in line for line in lines)
+        assert any(f"Listening: {expected_host}:" in line for line in lines)
         assert any("Available addresses:" in line for line in lines)
         assert any("http://127.0.0.1:" in line for line in lines)
         assert any("Ctrl+C" in line for line in lines)
