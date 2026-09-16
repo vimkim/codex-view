@@ -154,6 +154,13 @@ If the port is already occupied, choose another with `--port 8766`, or use
 - File replacement, truncation, and temporary disappearance are handled.
 - Scrolling stays in place unless **Follow new messages** is enabled.
 - **Show progress updates** reveals assistant commentary; it is hidden initially.
+- A floating **Latest message** action appears when you read above the end and marks
+  newly saved messages without forcing the page to follow them.
+- The visible **System / Light / Dark** selector is remembered by the browser.
+- Recognized, explicitly labeled code fences are highlighted locally. Unknown and
+  unlabeled fences remain neutral and are never language-guessed.
+- Labeled code blocks include a keyboard-accessible copy action with an HTTP-safe
+  fallback for LAN viewers.
 - Markdown tables, fenced code, `\(...\)`, `\[...\]`, `$...$` and `$$...$$` math
   are supported. MathJax is bundled; no CDN is required at runtime.
 

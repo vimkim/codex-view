@@ -119,3 +119,40 @@ print("$not_math$")
     assert "<script>" not in rendered
     assert 'href="javascript:' not in rendered
     assert "$not_math$" in rendered
+
+
+def test_recognized_fence_alias_is_highlighted_with_canonical_language():
+    rendered = make_renderer().render("```py\nprint('<safe>')\n```\n")
+
+    assert '<pre class="highlight" data-language="Python">' in rendered
+    assert '<code class="language-py">' in rendered
+    assert '<span class="' in rendered
+    assert "&lt;safe&gt;" in rendered
+    assert "<safe>" not in rendered
+
+
+def test_unknown_and_unlabeled_fences_stay_neutral_and_escaped():
+    rendered = make_renderer().render(
+        "```made-up\n<unknown>& value\n```\n\n```\n<plain>& value\n```\n"
+    )
+
+    assert '<code class="language-made-up">&lt;unknown&gt;&amp; value\n</code>' in rendered
+    assert "<pre><code>&lt;plain&gt;&amp; value\n</code>" in rendered
+    assert 'class="highlight"' not in rendered
+    assert "<unknown>" not in rendered
+    assert "<plain>" not in rendered
+
+
+def test_common_fence_aliases_use_friendly_canonical_names():
+    aliases = {
+        "py": "Python",
+        "js": "JavaScript",
+        "sh": "Bash",
+        "sql": "SQL",
+        "json": "JSON",
+        "cpp": "C++",
+    }
+
+    for alias, canonical in aliases.items():
+        rendered = make_renderer().render(f"```{alias}\nvalue\n```\n")
+        assert f'data-language="{canonical}"' in rendered

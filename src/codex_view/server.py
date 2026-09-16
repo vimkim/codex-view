@@ -159,7 +159,13 @@ def make_server(session: Session, host: str, port: int, interval: float = 1):
                 return
             name = "index.html" if path == "/" else path.lstrip("/")
             parts = name.split("/")
-            allowed = name in ("index.html", "style.css", "app.js", "mathjax-config.js")
+            allowed = name in (
+                "index.html",
+                "style.css",
+                "app.js",
+                "theme.js",
+                "mathjax-config.js",
+            )
             if not allowed and not name.startswith("mathjax/"):
                 self.body(b"Not found", "text/plain", 404)
                 return

@@ -3,25 +3,67 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <title>Codex conversation</title>
+  <script src="/theme.js"></script>
   <link rel="stylesheet" href="/style.css">
   <script src="/mathjax-config.js"></script>
   <script defer src="/mathjax/tex-svg.js"></script>
   <script defer src="/app.js"></script>
 </head>
 <body>
-  <header>
-    <div class="eyebrow">CODEX VIEW</div>
-    <h1 id="title">Loading conversation…</h1>
-    <p class="subtitle" id="directory">Read here. Keep chatting in your terminal.</p>
-    <div class="controls">
-      <span id="status" role="status" aria-live="polite">Connecting…</span>
-      <label><input type="checkbox" id="progress"> Show progress updates</label>
-      <label><input type="checkbox" id="follow"> Follow new messages</label>
-      <button id="latest">Latest message ↓</button>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-row">
+        <div class="brand" aria-label="Codex View">
+          <span class="brand-mark" aria-hidden="true">CV</span>
+          <span>Codex View</span>
+        </div>
+        <fieldset class="theme-control" aria-label="Color theme">
+          <legend class="sr-only">Color theme</legend>
+          <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </fieldset>
+      </div>
+
+      <div class="conversation-heading">
+        <div class="conversation-identity">
+          <p class="eyebrow">SAVED CONVERSATION</p>
+          <h1 id="title">Loading conversation…</h1>
+          <p class="directory">
+            <span aria-hidden="true">▱</span>
+            <span id="directory">Loading working directory…</span>
+          </p>
+        </div>
+        <div class="view-controls">
+          <span id="status" role="status" aria-live="polite">Connecting…</span>
+          <label class="check-control">
+            <input type="checkbox" id="progress">
+            <span>Show progress</span>
+          </label>
+          <label class="check-control">
+            <input type="checkbox" id="follow">
+            <span>Follow new messages</span>
+          </label>
+        </div>
+      </div>
     </div>
   </header>
-  <main id="messages" aria-label="Conversation"></main>
-  <footer>New saved messages appear automatically. Continue the conversation in Codex CLI.</footer>
+
+  <main id="messages" class="reading-shell" aria-label="Saved conversation"></main>
+
+  <footer class="site-footer">
+    <span>Codex View</span>
+    <span>Read-only saved conversation</span>
+  </footer>
+
+  <button id="latest" class="latest-button" type="button" aria-label="Go to latest message" hidden>
+    <span class="latest-unseen-dot" aria-hidden="true"></span>
+    <span>Latest message</span>
+    <span id="latest-count" aria-live="polite"></span>
+    <span aria-hidden="true">↓</span>
+  </button>
+  <div id="copy-status" class="sr-only" role="status" aria-label="Copy status" aria-live="polite"></div>
 </body>
 </html>
